@@ -1,42 +1,42 @@
 import { NextResponse } from "next/server";
-import { adminAuth } from "@/lib/firebaseAdmin";
-import { cookies } from "next/headers";
+import { sign } from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const token = body.token;
+    // 🔐 REQUIRED ENV VAR
+    const jwtSecret = process.env.JWT_SECRET;
 
-    if (!token) {
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is missing in environment variables");
+    }
+
+    const body = await req.json();
+    const { email } = body;
+
+    if (!email) {
       return NextResponse.json(
-        { error: "Missing token" },
+        { error: "Email is required" },
         { status: 400 }
       );
     }
 
-    // Verify Firebase ID token
-    await adminAuth.verifyIdToken(token);
+    // ✅ Create token safely
+    const token = sign(
+      { email },
+      jwtSecret,
+      { expiresIn: "7d" }
+    );
 
-    // Create session cookie
-    const sessionCookie = await adminAuth.createSessionCookie(token, {
-      expiresIn: 5 * 24 * 60 * 60 * 1000, // 5 days
+    return NextResponse.json({
+      success: true,
+      token,
     });
+  } catch (error: any) {
+    console.error("LOGIN API ERROR:", error.message);
 
-    // Next.js 16: cookies() is async
-    const cookieStore = await cookies();
-    cookieStore.set("__session", sessionCookie, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("LOGIN API ERROR:", error);
     return NextResponse.json(
-      { error: "Session creation failed" },
-      { status: 401 }
+      { error: "Login failed" },
+      { status: 500 }
     );
   }
 }
