@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
-    // 🔐 REQUIRED ENV VAR
     const jwtSecret = process.env.JWT_SECRET;
 
+    // ✅ HARD GUARD — prevents build crash
     if (!jwtSecret) {
-      throw new Error("JWT_SECRET is missing in environment variables");
+      throw new Error("JWT_SECRET is missing");
     }
 
     const body = await req.json();
@@ -20,8 +20,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ Create token safely
-    const token = sign(
+    const token = jwt.sign(
       { email },
       jwtSecret,
       { expiresIn: "7d" }
