@@ -4,7 +4,6 @@ export const revalidate = 0;
 import { adminDb } from "@/lib/firebaseAdmin";
 import EnquiryForm from "@/components/EnquiryForm";
 
-export const dynamic = "force-dynamic";
 
 type Property = {
   title?: string;
