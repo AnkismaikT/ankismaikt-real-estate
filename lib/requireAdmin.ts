@@ -19,7 +19,7 @@ export async function requireAdmin() {
     }
 
     return decoded;
-  } catch (err) {
+  } catch (error) {
     redirect("/login");
   }
 }

@@ -6,7 +6,6 @@ import { adminDb } from "@/lib/firebaseAdmin";
 import { requireAdmin } from "@/lib/requireAdmin";
 
 export default async function AdminPropertiesPage() {
-  // 🔐 Admin protection (DO NOT REMOVE)
   await requireAdmin();
 
   const snap = await adminDb
@@ -45,12 +44,6 @@ export default async function AdminPropertiesPage() {
               >
                 Edit
               </Link>
-
-              {/*
-                DELETE BUTTON TEMPORARILY REMOVED
-                Backend + API still exist
-                Will be re-added as Client Component
-              */}
             </div>
           </div>
         ))}
