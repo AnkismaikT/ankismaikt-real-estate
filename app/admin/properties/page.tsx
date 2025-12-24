@@ -3,8 +3,12 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { adminDb } from "@/lib/firebaseAdmin";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export default async function AdminPropertiesPage() {
+  // 🔐 Admin protection (DO NOT REMOVE)
+  await requireAdmin();
+
   const snap = await adminDb
     .collection("properties")
     .orderBy("createdAt", "desc")
