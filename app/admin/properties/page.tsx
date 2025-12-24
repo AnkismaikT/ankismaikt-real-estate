@@ -1,12 +1,18 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import Link from "next/link";
 import { adminDb } from "@/lib/firebaseAdmin";
 
 export default async function AdminPropertiesPage() {
-  const snap = await adminDb.collection("properties").orderBy("createdAt", "desc").get();
+  const snap = await adminDb
+    .collection("properties")
+    .orderBy("createdAt", "desc")
+    .get();
 
   const properties = snap.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data(),
+    ...(doc.data() as any),
   }));
 
   return (
@@ -36,9 +42,11 @@ export default async function AdminPropertiesPage() {
                 Edit
               </Link>
 
-              {/* DELETE BUTTON TEMPORARILY REMOVED
-                  Backend + API still exist
-                  Will be re-added as Client Component */}
+              {/*
+                DELETE BUTTON TEMPORARILY REMOVED
+                Backend + API still exist
+                Will be re-added as Client Component
+              */}
             </div>
           </div>
         ))}
