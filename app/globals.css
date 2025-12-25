@@ -6,3 +6,53 @@ body {
 }
 a { text-decoration: none; }
 
+/* -----------------------------
+   SOBHA-INSPIRED FINAL POLISH
+   ----------------------------- */
+
+/* Global text rendering */
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Body rhythm */
+body {
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+}
+
+/* Headings: calm, confident, editorial */
+h1, h2, h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Paragraphs: premium readability */
+p {
+  line-height: 1.75;
+}
+
+/* Section breathing room (mobile first) */
+section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Desktop refinement */
+@media (min-width: 1024px) {
+  section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Links: subtle, not loud */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Images: remove harsh edges feeling */
+img {
+  image-rendering: auto;
+}
+
